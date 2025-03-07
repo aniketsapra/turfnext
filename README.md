@@ -1,8 +1,9 @@
-# React + Vite
+TurfSync
+TurfSync is a full-stack web application for booking sports turfs, allowing users to log in, select playgrounds, and book time slots. Built with React, Express.js, MongoDB, and Tailwind CSS.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Features
+User Authentication: Sign up, log in, and secure sessions using JWT.
+Real-time Booking System: Prevents double bookings by checking slot availability.
+Responsive Design: Built with Tailwind CSS for mobile and desktop views.
+MongoDB Integration: All booking data is stored securely.
+Error Handling: Interactive popups for booking confirmations and errors.
