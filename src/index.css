@@ -1,0 +1,66 @@
+@import "tailwindcss";
+@source "../node_modules/flowbite-datepicker";
+
+.videomain {
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+}
+
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.footerlogo {
+  font-family: "Tektur", serif;
+}
+
+.content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  font-family: "Tektur", serif;
+}
+
+.form {
+  position: absolute;
+  flex-direction: column;
+}
+
+.overlay {
+  position: absolute;
+  top: 10;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.hero {
+  background-color: #0e661c;
+  background-image: url("https://www.transparenttextures.com/patterns/football-no-lines.png");
+}
+
+.herofont {
+  font-family: "Bebas Neue", serif;
+}
+
+/* In your global CSS file (e.g., globals.css or tailwind.css) */
+html, body {
+  overscroll-behavior: none; /* Prevents scrolling past top/bottom */
+  height: 100%; /* Ensure full height coverage */
+  margin: 0;
+  padding: 0;
+}
+
+/* Apply smooth scrolling to the whole page */
+html {
+  scroll-behavior: smooth;
+}
