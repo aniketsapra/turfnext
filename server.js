@@ -4,6 +4,8 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
 import bookingRoutes from './booking.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { verifyJWT } from './middleware/auth.js';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -11,7 +13,11 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
+
+// Define __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Middleware
 app.use(express.json());
@@ -19,6 +25,13 @@ app.use(cors());
 
 // Routes
 app.use('/api/bookings', bookingRoutes);
+
+// Serve static files from Vite's build output
+app.use(express.static(path.join(__dirname, 'dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 // MongoDB connection
 mongoose.connect('mongodb://localhost:27017/auth-app', {
