@@ -4,8 +4,6 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
 import bookingRoutes from './booking.js';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { verifyJWT } from './middleware/auth.js';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -14,27 +12,17 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
-// Define __dirname in ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const MONGO_URI = process.env.MONGO_URI;
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin : '*'}));
 
 // Routes
 app.use('/api/bookings', bookingRoutes);
 
-// Serve static files from Vite's build output
-app.use(express.static(path.join(__dirname, 'dist')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
-
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/auth-app', {
+mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => console.log('MongoDB connected')).catch(err => console.error(err));
@@ -118,6 +106,10 @@ app.get('/api/user', verifyJWT, async (req, res) => {
 // Protected route
 app.get('/api/main', verifyJWT, (req, res) => {
   res.json({ message: 'Protected route accessed!', user: req.user });
+});
+
+app.get('/', (req, res) => {
+  res.send('turfsync backend is running');
 });
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
