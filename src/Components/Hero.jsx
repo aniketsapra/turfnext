@@ -6,7 +6,7 @@ function Hero() {
   return (
     <div>
       <div className='videomain'>
-          <div className='overlay'></div>
+          <div className='herooverlay'></div>
           <video src={Video3} autoPlay loop muted></video>
           <div className='absolute w-full h-full top-0 flex flex-col justify-center text-white herofont text-right p-10 mt-7'>
           <h1 className='text-4xl md:text-7xl md:font-bold'>
