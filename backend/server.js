@@ -17,7 +17,7 @@ const PORT = 5000;
 app.use(express.json());
 
 app.use(cors({
-  origin: 'https://turfsync.vercel.app', // replace with your actual frontend URL
+  origin: process.env.FRONTEND_URL,
   methods: ['GET', 'POST', 'DELETE'],
   credentials: true
 }));
