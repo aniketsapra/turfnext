@@ -11,18 +11,17 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI;
+const PORT = 5000;
 
 // Middleware
 app.use(express.json());
-app.use(cors({ origin : '*'}));
+app.use(cors());
 
 // Routes
 app.use('/api/bookings', bookingRoutes);
 
 // MongoDB connection
-mongoose.connect(MONGO_URI, {
+mongoose.connect('mongodb://localhost:27017/auth-app', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => console.log('MongoDB connected')).catch(err => console.error(err));
@@ -106,10 +105,6 @@ app.get('/api/user', verifyJWT, async (req, res) => {
 // Protected route
 app.get('/api/main', verifyJWT, (req, res) => {
   res.json({ message: 'Protected route accessed!', user: req.user });
-});
-
-app.get('/', (req, res) => {
-  res.send('turfsync backend is running');
 });
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
