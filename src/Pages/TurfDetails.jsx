@@ -35,7 +35,7 @@ function TurfDetails() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/bookings', {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/bookings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

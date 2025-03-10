@@ -17,12 +17,12 @@ function ProfilePage() {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const userResponse = await axios.get('http://localhost:5000/api/user', {
+        const userResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/user`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUserData(userResponse.data);
 
-        const bookingsResponse = await axios.get(`http://localhost:5000/api/bookings/user/${userResponse.data.uniqueId}`, {
+        const bookingsResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/bookings/user/${userResponse.data.uniqueId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setBookings(bookingsResponse.data);
@@ -37,7 +37,7 @@ function ProfilePage() {
   const handleDelete = async (bookingId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/bookings/${bookingId}`, {
+      await axios.delete(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/bookings/${bookingId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

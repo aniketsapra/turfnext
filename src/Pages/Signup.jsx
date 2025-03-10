@@ -11,7 +11,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/signup', formData);
+      await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/signup`, formData);
       setShowSuccessPopup(true); // Show success popup
       setTimeout(() => {
         setShowSuccessPopup(false);
