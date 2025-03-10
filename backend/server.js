@@ -20,6 +20,10 @@ app.use(cors());
 // Routes
 app.use('/api/bookings', bookingRoutes);
 
+app.get('/', (req, res) => {
+  res.send('Backend is running...');
+});
+
 // MongoDB connection
 mongoose.connect('mongodb://localhost:27017/auth-app', {
   useNewUrlParser: true,
