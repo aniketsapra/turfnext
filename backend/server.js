@@ -15,7 +15,12 @@ const PORT = 5000;
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+
+app.use(cors({
+  origin: 'https://turfsync.vercel.app', // replace with your actual frontend URL
+  methods: ['GET', 'POST', 'DELETE'],
+  credentials: true
+}));
 
 // Routes
 app.use('/api/bookings', bookingRoutes);
