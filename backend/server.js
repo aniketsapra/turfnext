@@ -6,12 +6,19 @@ import cors from 'cors';
 import bookingRoutes from './booking.js';
 import { verifyJWT } from './middleware/auth.js';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const app = express();
 const PORT = 5000;
+// Define dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Middleware
 app.use(express.json());
@@ -25,9 +32,15 @@ app.use(cors({
 // Routes
 app.use('/api/bookings', bookingRoutes);
 
-app.get('/', (req, res) => {
-  res.send('Backend is running...');
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// Handle React routing, return all requests to React app
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../dist', 'index.html'));
 });
+
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
