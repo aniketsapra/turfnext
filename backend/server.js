@@ -107,6 +107,7 @@ app.post('/api/signup', async (req, res) => {
 
 // Login Route
 app.post('/api/login', async (req, res) => {
+  console.log('Login request received:', req.body); // Log request body
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
