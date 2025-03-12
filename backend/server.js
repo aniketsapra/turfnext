@@ -15,7 +15,8 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
+
 // Define dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,20 +24,7 @@ const __dirname = path.dirname(__filename);
 // Middleware
 app.use(express.json());
 
-const allowedOrigins = ['https://turfnext-frontend.onrender.com'];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
-}));
-app.options('*', cors());
+app.use(cors());
 
 // Routes
 app.use('/api/bookings', bookingRoutes);
@@ -107,43 +95,20 @@ app.post('/api/signup', async (req, res) => {
 
 // Login Route
 app.post('/api/login', async (req, res) => {
-  console.log('Login request received:', req.body);
-
   const { email, password } = req.body;
-
-  if (!email || !password) {
-    console.log('Missing email or password');
-    return res.status(400).json({ error: 'Email and password are required' });
-  }
-
-  if (!JWT_SECRET) {
-    console.error('JWT_SECRET is missing or undefined');
-    return res.status(500).json({ error: 'Internal server error' });
-  }
-
   try {
     const user = await User.findOne({ email });
-    if (!user) {
-      console.log('User not found for email:', email);
-      return res.status(400).json({ error: 'Invalid email or password' });
-    }
+    if (!user) return res.status(400).json({ error: 'Invalid email or password' });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      console.log('Password does not match for user:', email);
-      return res.status(400).json({ error: 'Invalid email or password' });
-    }
+    if (!isMatch) return res.status(400).json({ error: 'Invalid email or password' });
 
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
-    console.log('Token generated successfully for user:', email);
-
-    res.status(200).json({ token });
+    res.json({ token });
   } catch (err) {
-    console.error('Login error:', err.message);
-    res.status(500).json({ error: 'Internal server error', details: err.message });
+    res.status(500).json({ error: 'Error logging in', details: err.message });
   }
 });
-
 
 app.get('/api/user', verifyJWT, async (req, res) => {
   try {
