@@ -107,21 +107,43 @@ app.post('/api/signup', async (req, res) => {
 
 // Login Route
 app.post('/api/login', async (req, res) => {
-  console.log('Login request received:', req.body); // Log request body
+  console.log('Login request received:', req.body);
+
   const { email, password } = req.body;
+
+  if (!email || !password) {
+    console.log('Missing email or password');
+    return res.status(400).json({ error: 'Email and password are required' });
+  }
+
+  if (!JWT_SECRET) {
+    console.error('JWT_SECRET is missing or undefined');
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+
   try {
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ error: 'Invalid email or password' });
+    if (!user) {
+      console.log('User not found for email:', email);
+      return res.status(400).json({ error: 'Invalid email or password' });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ error: 'Invalid email or password' });
+    if (!isMatch) {
+      console.log('Password does not match for user:', email);
+      return res.status(400).json({ error: 'Invalid email or password' });
+    }
 
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+    console.log('Token generated successfully for user:', email);
+
+    res.status(200).json({ token });
   } catch (err) {
-    res.status(500).json({ error: 'Error logging in', details: err.message });
+    console.error('Login error:', err.message);
+    res.status(500).json({ error: 'Internal server error', details: err.message });
   }
 });
+
 
 app.get('/api/user', verifyJWT, async (req, res) => {
   try {
