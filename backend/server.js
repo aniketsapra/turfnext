@@ -23,11 +23,20 @@ const __dirname = path.dirname(__filename);
 // Middleware
 app.use(express.json());
 
+const allowedOrigins = ['https://turfnext-frontend.onrender.com'];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  methods: ['GET', 'POST', 'DELETE'],
-  credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
 }));
+app.options('*', cors());
 
 // Routes
 app.use('/api/bookings', bookingRoutes);

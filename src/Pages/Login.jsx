@@ -21,7 +21,7 @@ const Login = () => {
     try {
       const { data } = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/login`, formData);
       localStorage.setItem('token', data.token);
-      
+      console.log('Backend URL:', import.meta.env.VITE_REACT_APP_BACKEND_BASEURL);
       setShowSuccessPopup(true); // Show success popup
       setErrorMessage(''); // Clear any previous error
 
